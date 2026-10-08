@@ -1,0 +1,47 @@
+{
+  "skill_name": "book-tutor",
+  "evals": [
+    {
+      "id": 0,
+      "name": "full-tutoring",
+      "prompt": "我上传了一本《信息系统项目管理师教程（第4版）》的 PDF，想请你带我学习第一章《信息化发展》。请先读取书的内容，制定一个学习计划，然后详细讲解第一章的内容（讲清楚、讲详细、不要遗漏），讲解完给出本章的重点和难点，最后提出几个苏格拉底式的思考题让我自己思考（先不要直接给答案，等我回答后再纠错）。",
+      "expected_output": "AI 用本地 extract_pdf.py 提取 PDF（--dump-toc 建目录 + 按章 --start/--end 提取），建立数据目录 ~/.book-tutor/books/<slug>/state.md，制定学习计划，详细讲解第一章。讲解须遵循 explaining-well.md：核心概念走「直觉 → 定义 → 机制」三段，补齐因果/对比等五连映射，公式与推导不跳步，给出例子与反例，术语中英对照。输出本章回看（主线 + 与前后章衔接）、本章重点难点，提出多个苏格拉底式思考题并停下来等用户回答（不直接给答案）。",
+      "files": ["第一章_extracted.txt"]
+    },
+    {
+      "id": 1,
+      "name": "chapter-teach",
+      "prompt": "请帮我学习这本《信息系统项目管理师教程（第4版）》第一章《信息化发展》。先读 PDF 内容，详细讲解第一章，讲完后输出本章的重点和难点，然后出一份章节测验题（包含概念题和应用题）检验我的理解，最后生成一份结构化的章节学习笔记方便我复习。",
+      "expected_output": "AI 详细讲解第一章（按学习单元切分，逐个讲解；每个单元含「本单元地图、讲解正文、一句话主线小结」，核心概念走直觉→定义→机制三段），输出本章回看与重点难点，提供章节测验题（含概念题、应用题和一道费曼式「用自己的话向外行解释」题），生成结构化章节笔记并写入 books/<slug>/notes/ch01.md，把新术语追加到 glossary.md，最后更新 state.md 的进度与复习日程。",
+      "files": ["第一章_extracted.txt"]
+    },
+    {
+      "id": 2,
+      "name": "resume-session",
+      "prompt": "继续上次的学习吧，我们学到哪了？",
+      "expected_output": "AI 先检查 ~/.book-tutor/ 数据目录，读取 profile.md、对应书的 state.md 与 glossary.md，向用户汇报上次学到的位置（章节/小节）、已完成章节数、上一章的一句话主线、复习到期项，并给出本次建议；确认后从断点继续，而不是重头开始。",
+      "files": ["profile.md", "state.md"]
+    },
+    {
+      "id": 3,
+      "name": "review-session",
+      "prompt": "帮我复习一下前面学过的内容。",
+      "expected_output": "AI 读取 state.md 的复习日程，列出到期章节；先让用户复述各章一句话主线，再采用交错混合出题（混合多个章节、混合题型），优先考察 profile.md 中记录的弱项；先让用户作答再批改讲解；对遗忘的概念用 explaining-well.md 的方法换角度回炉重讲；根据表现调整下次复习间隔（答好拉长、答差缩短）并更新 state.md 复习表。",
+      "files": ["profile.md", "state.md"]
+    },
+    {
+      "id": 4,
+      "name": "local-extract-usage",
+      "prompt": "这本书有点大，帮我读一下《Designing Data-Intensive Applications》的 PDF 并开始带学。",
+      "expected_output": "AI 先用 extract_pdf.py --dump-toc 导出目录建立全书地图，再按章用 --start/--end 分块提取（含 --tables --images-dir），只提取当前章节而非整本，用 read 的 offset/limit 按页读取；不一次性提取全书；遇到扫描页加 --ocr。开始讲解后遵循 explaining-well.md 的三段式与逐步拆解要求。",
+      "files": ["ddia_sample.pdf"]
+    },
+    {
+      "id": 5,
+      "name": "explain-more-clearly",
+      "prompt": "这本书我读起来有点吃力，很多概念看不太懂。请帮我讲解这一节，尽量讲得更容易懂、更连贯、更详细一些。",
+      "expected_output": "AI 遵循 explaining-well.md：先用大白话与类比给出直觉，再引入术语与精确定义，并说明机制；补齐因果与对比等五连映射，显式回指上一章/上一单元并前瞻后续章节；公式或推导逐步拆解、标注每步依据，给出例子与反例；术语首次出现给出中英对照并区分易混项；一个单元不超过 3 个核心概念，单元末尾给一句话主线小结。若用户弱项已记录在 profile.md，则对该概念讲解更厚。",
+      "files": ["chapter_extracted.txt"]
+    }
+  ]
+}

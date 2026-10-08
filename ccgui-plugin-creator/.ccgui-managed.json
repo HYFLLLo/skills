@@ -1,0 +1,9 @@
+{
+  "managedBy": "ccgui",
+  "skill": "ccgui-plugin-creator",
+  "sourceHash": "da5cd31b0c6d6c388f5bf1cfcf4a011fba26a774c7f4cce7ac705cd45e43db4b",
+  "files": [
+    "SKILL.md",
+    "references\\sdk-api.md"
+  ]
+}
